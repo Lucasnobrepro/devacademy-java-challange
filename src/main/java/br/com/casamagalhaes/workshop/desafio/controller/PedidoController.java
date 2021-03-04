@@ -27,34 +27,54 @@ public class PedidoController {
     @Autowired
     private PedidoService servicePedido;
 
-
-    @PutMapping("/{id}/status")
+      /*
+    * Entrada: Recebe um ID de pedido e o novo Status para o pedido;
+    * Saida: O retorno é uma string com o novo STATUS; 
+    * Descricao: Muda o STATUS do pedido;
+    */ 
+    @PostMapping("/{id}/status")
+    @ResponseStatus(code = HttpStatus.OK)
     public String changeStatus(@PathVariable Long id, @Valid @RequestBody Status status){
         return servicePedido.statusChange(id,status.getStatus());
     }
 
-    // Funciona
+      /*
+    * Entrada: Recebe um ID de um pedido;
+    * Saida: Devolve um Pedido;
+    * Descricao: Busca um pedido no banco e o retorna;
+    */ 
     @GetMapping(path = {"/{id}"})
     public Pedido getPedido(@PathVariable Long id){
         return servicePedido.getPedido(id);
     }
     
-    //Funciona
+      /*
+    * Entrada: Recebe do Body da requisicao um pedido;
+    * Saida: Devolve o pedido que foi inserido no banco;
+    * Descricao: Adiciona um pedido ao banco;
+    */ 
     @PostMapping({"/",""})
     @ResponseStatus(code = HttpStatus.CREATED)
     public Pedido addPedido(@Valid @RequestBody Pedido pedido){
-        pedido.setStatus("PEDENTE");
         return servicePedido.addPedido(pedido);
     }
 
-    // Funcionando
+    /*
+    * Entrada: Recebe um ID do pedido e um ITEM do body da requisicao;
+    * Saida: Devolve o pedido;
+    * Descricao: Adiciona um item a um pedido e retona-lo;
+    */ 
     @PutMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK)
     public Pedido addItem(@Valid @RequestBody Item pedido, @PathVariable Long id){
         return servicePedido.addItem(id, pedido);
     }
 
-    // Funcionando
+    /*
+    * Entrada: Recebe o ID de um pedido;
+    * Saida: ;
+    * Descricao: Deleta um pedido;
+    */ 
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void deletePedido(@PathVariable Long id){

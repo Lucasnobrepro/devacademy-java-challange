@@ -26,9 +26,9 @@ public class PedidoService {
     }
 
     /*
-    * Entrada: 
-    * Saida: 
-    * Descricao:
+    * Entrada: Recebe um pedido;
+    * Saida: Devolve o pedido com os valores atualizados;
+    * Descricao: Atualizar os valores
     */ 
     public Pedido atualizarValores(Pedido pedido){
         Double valorTotalProdutos = 0.0;
@@ -42,18 +42,19 @@ public class PedidoService {
     }
 
     /*
-    * Entrada: 
-    * Saida: 
-    * Descricao: Adiciona um novo pedido ao banco;
+    * Entrada: Recebe um pedido;
+    * Saida: Devolve o pedido que foi adicionado;
+    * Descricao: Adiciona um novo item a um pedido;
     */ 
     public Pedido addPedido(Pedido pedido) {
+        pedido.setStatus("PEDENTE");
         pedido = atualizarValores(pedido);
         return repository.saveAndFlush(pedido);
     }
 
     /*
-    * Entrada: 
-    * Saida: 
+    * Entrada: O ID do pedido e um ITEM que sera adicionado em um pedido;
+    * Saida: O pedido com o ITEM adicionado;
     * Descricao: Adiciona um item ao pedido no banco;
     */ 
     public Pedido addItem(Long numPedido, Item item){
@@ -66,13 +67,13 @@ public class PedidoService {
             else
                 throw new UnsupportedOperationException("Numero do pedido informado diferente do pedido.");
         }else
-            throw new EntityNotFoundException("Numero do pedido: " + numPedido);
+            throw new UnsupportedOperationException("Numero do pedido informado Nao existe.");
     }
 
     /*
-    * Entrada: 
-    * Saida: 
-    * Descricao:
+    * Entrada: O ID do pedido a ser deletado;
+    * Saida: ;
+    * Descricao: Deleta um pedido pelo ID;
     */ 
     public void deletePedido(Long numPedido){
         repository.deleteById(numPedido);
@@ -80,29 +81,29 @@ public class PedidoService {
 
 
     /*
-    * Entrada: 
-    * Saida: 
-    * Descricao:
+    * Entrada: Recebe o ID do pedido para mudar o status, e recebe pelo body da requisicao o novo STATUS;
+    * Saida: O STATUS atualizado
+    * Descricao: Atualiza o status de um pedido pelo ID.
     */ 
     public String statusChange(Long numPedido, String status){
         if (repository.existsById(numPedido)){
-            Pedido p = repository.findById(numPedido).orElseThrow(EntityNotFoundException::new);
-            String s = p.getStatus();
+            Pedido pedidoExistente = repository.findById(numPedido).orElseThrow(EntityNotFoundException::new);
+            String statusPedido = pedidoExistente.getStatus();
 
-            if (numPedido.equals(p.getPedido())){
-                if(status.equals("CANCELADO") && (!s.equals("PRONTO") || !s.equals("PENDENTE"))){
+            if (numPedido.equals(pedidoExistente.getPedido())){
+                if(status.equals("CANCELADO") && (!statusPedido.equals("PRONTO") || !statusPedido.equals("PENDENTE"))){
                    throw new UnsupportedOperationException("status não pode ser alterado....");
     
-                }else if(status.equals("EM_ROTA") && !s.equals("PRONTO")){
+                }else if(status.equals("EM_ROTA") && !statusPedido.equals("PRONTO")){
                     throw new UnsupportedOperationException("status não pode ser alterado....");
     
-                }else if(status.equals("ENTREGUE") && !s.equals("EM_ROTA")){
+                }else if(status.equals("ENTREGUE") && !statusPedido.equals("EM_ROTA")){
                     throw new UnsupportedOperationException("status não pode ser alterado....");
     
                 }else{
-                    p.setStatus(status);
-                    repository.saveAndFlush(p);
-                    return p.getStatus();
+                    pedidoExistente.setStatus(status);
+                    repository.saveAndFlush(pedidoExistente);
+                    return pedidoExistente.getStatus();
                 }
             }else
                 throw new UnsupportedOperationException("Numero do pedido informado diferente do pedido.");
