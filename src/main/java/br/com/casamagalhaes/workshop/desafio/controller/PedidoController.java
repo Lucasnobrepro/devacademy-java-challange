@@ -1,5 +1,7 @@
 package br.com.casamagalhaes.workshop.desafio.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +20,9 @@ import br.com.casamagalhaes.workshop.desafio.model.Item;
 import br.com.casamagalhaes.workshop.desafio.model.Pedido;
 import br.com.casamagalhaes.workshop.desafio.model.Status;
 import br.com.casamagalhaes.workshop.desafio.service.PedidoService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-
+@Tag(name = "Pedido")
 @RestController
 @RequestMapping("/pedidos")
 public class PedidoController {
@@ -46,6 +49,11 @@ public class PedidoController {
     @GetMapping(path = {"/{id}"})
     public Pedido getPedido(@PathVariable Long id){
         return servicePedido.getPedido(id);
+    }
+    
+    @GetMapping(path = {"/",""})
+    public List<Pedido> getPedidoAll(){
+        return servicePedido.getPedidoAll();
     }
     
       /*

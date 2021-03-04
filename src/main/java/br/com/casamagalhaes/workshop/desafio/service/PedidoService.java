@@ -1,5 +1,7 @@
 package br.com.casamagalhaes.workshop.desafio.service;
 
+import java.util.List;
+
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,10 @@ public class PedidoService {
     */ 
     public Pedido getPedido(Long pedido){
         return repository.findById(pedido).orElseThrow(EntityNotFoundException::new);
+    }
+
+    public List<Pedido> getPedidoAll(){
+        return repository.findAll();
     }
 
     /*

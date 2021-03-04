@@ -34,7 +34,7 @@ public class Pedido {
 
     private Double valorTotalProdutos;
 
-    private Long taxa;
+    private Double taxa;
 
     private Double valorTotal;
 
