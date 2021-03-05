@@ -2,11 +2,13 @@ package br.com.casamagalhaes.workshop.desafio.controller;
 
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,6 +53,11 @@ public class PedidoController {
         return servicePedido.getPedido(id);
     }
     
+    /*
+    * Entrada: ;
+    * Saida: Lista de pedidos List<Pedido>;
+    * Descricao: Devolve todos os pedidos;
+    */ 
     @GetMapping(path = {"/",""})
     public List<Pedido> getPedidoAll(){
         return servicePedido.getPedidoAll();
@@ -88,5 +95,9 @@ public class PedidoController {
     public void deletePedido(@PathVariable Long id){
         servicePedido.deletePedido(id);
     }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public void notFound() {}
 
 }

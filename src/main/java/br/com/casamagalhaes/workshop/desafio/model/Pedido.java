@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import lombok.Data;
@@ -41,8 +42,7 @@ public class Pedido {
     private String status;
 
     @Valid
-    @NotEmpty(message = "Não pode esta vazio")
-    @Size(min = 1, message = "Deve possuir pelo menos 1 item")
+    @NotNull(message = "Não pode esta vazio")
     @OneToMany(cascade = CascadeType.ALL)
     private List<Item> itens = new ArrayList<Item>();
 }

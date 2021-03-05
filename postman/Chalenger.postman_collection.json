@@ -1,0 +1,157 @@
+{
+	"info": {
+		"_postman_id": "faa995e0-5016-499e-af2c-3776951ccbc8",
+		"name": "Chalenger",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/pedidos Post Add pedido",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"nomeCliente\":\"JOSE FRANCISCO\",\n\"endereco\":\"Rua A, 500\",\n\"telefone\":\"8532795578\",\n\"taxa\":2.50,\n\"itens\": \n    [{\n        \"descricao\": \"Refri\",\n        \"precoUnitario\": 5.5,\n        \"quantidade\": 1\n   },\n   {\n        \"descricao\": \"Coxinha\",\n        \"precoUnitario\": 3.00,\n        \"quantidade\": 1\n   },\n   {\n        \"descricao\": \"Batatinha\",\n        \"precoUnitario\": 5.00,\n        \"quantidade\": 1\n   }]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/pedidos/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pedidos",
+						""
+					]
+				},
+				"description": "Adiciona um novo pedido."
+			},
+			"response": []
+		},
+		{
+			"name": "/pedidos GET ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/pedidos/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pedidos",
+						"1"
+					]
+				},
+				"description": "Recupera um pedido utilizando o ID que e passado pelo PATH."
+			},
+			"response": []
+		},
+		{
+			"name": "/pedidos DELETE",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/pedidos/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pedidos",
+						"2"
+					]
+				},
+				"description": "Deleta um pedido, passando um ID pelo PATH."
+			},
+			"response": []
+		},
+		{
+			"name": "/pedidos PUT Add Item",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"descricao\": \"fanta\",\n    \"precoUnitario\": 5.5,\n    \"quantidade\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/pedidos/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pedidos",
+						"1"
+					]
+				},
+				"description": "Adiciona um ITEM em um pedido ja cadastrado, passando o ID pelo PATH e o ITEM pelo BODY."
+			},
+			"response": []
+		},
+		{
+			"name": "/pedidos/{id}/status ATUALIZA STATUS",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"status\": \"PRONTO\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/pedidos/1/status",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pedidos",
+						"1",
+						"status"
+					]
+				},
+				"description": "Atualiza o status do pedido, passando um ID pelo PATH."
+			},
+			"response": []
+		},
+		{
+			"name": "/pedidos GetAll",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/pedidos/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pedidos",
+						""
+					]
+				},
+				"description": "Tras todos os pedidos cadastrados."
+			},
+			"response": []
+		}
+	]
+}

@@ -4,6 +4,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import br.com.casamagalhaes.workshop.desafio.model.Item;
 import br.com.casamagalhaes.workshop.desafio.model.Pedido;
+import br.com.casamagalhaes.workshop.desafio.model.Status;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,6 +21,7 @@ import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 
 import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +39,7 @@ public class PedidoControlerTest {
 
 
     @BeforeEach
-    private void preperarRequisicao(){
+    private void preaparandoRequisicao(){
        requisicao = new RequestSpecBuilder()
           .setBasePath("/pedidos")
           .setPort(porta)
@@ -48,7 +50,7 @@ public class PedidoControlerTest {
     }
 
     @Test
-    public void deveriaReceberMensagemDeOk(){
+    public void deveriaRecuperarTodosOSPedidos(){
         given()
          .spec(requisicao)
        .expect()   
@@ -58,34 +60,92 @@ public class PedidoControlerTest {
     }
 
     @Test
-    public void deveriaDeletarPedido() throws JsonProcessingException{
-      Pedido pedidoCadastrado = dadoUmPedido();
-        given()
-          .spec(requisicao) 
-        .when()  
-          .delete("/{pedido}",pedidoCadastrado.getPedido())
-        .then()
-          .statusCode(HttpStatus.SC_NO_CONTENT);
+    public void deveriaCriarUmPedido() throws JsonProcessingException {
+        Pedido pedido = given()
+                .spec(requisicao)
+                .body(objectMapper.writeValueAsString(dadoUmPedido()))
+                .when()
+                .post()
+                .then()
+                .statusCode(HttpStatus.SC_CREATED)
+                .extract()
+                .as(Pedido.class);
+
+        assertNotNull(pedido, "pedido não foi cadastrado");
+        assertNotNull(pedido, "pedido não foi cadastrado");
     }
 
+    @Test
+    public void deveriaDeletarPedido() throws JsonProcessingException{
+      Pedido pedidoCadastrado = given()
+                .spec(requisicao)
+                .body(objectMapper.writeValueAsString(dadoUmPedido()))
+                .when()
+                .post()
+                .then()
+                .statusCode(HttpStatus.SC_CREATED)
+                .extract()
+                .as(Pedido.class);
 
-  //   @Test
-  //    public void deveriaCriarUmProduto() throws JsonProcessingException {
-  //       Pedido pedidoCadastrado  =
-  //       given()
-  //         .spec(requisicao)
-  //         .body(objectMapper.writeValueAsString(dadoUmPedido()))
-  //       .when()  
-  //         .post()
-  //       .then()
-  //         .statusCode(HttpStatus.SC_CREATED)
-  //       .extract()
-  //         .as(Pedido.class);    
-        
-  //       assertNotNull(pedidoCadastrado, "produto não foi cadastrado");    
-  //       assertNotNull(pedidoCadastrado.getPedido(), "id do produto não gerado");       
-  //    }
+        assertNotNull(pedidoCadastrado, "pedido não foi cadastrado");
+        assertNotNull(pedidoCadastrado, "pedido não foi cadastrado");
 
+          given()
+          .spec(requisicao) 
+          .when()  
+          .delete("/{id}",pedidoCadastrado.getPedido())
+          .then()
+          .statusCode(HttpStatus.SC_NO_CONTENT);
+
+
+          given()
+          .spec(requisicao)
+          .body(objectMapper.writeValueAsString(pedidoCadastrado))
+          .when()
+          .get("/{id}", pedidoCadastrado.getPedido())
+          .then() 
+          .statusCode(HttpStatus.SC_NOT_FOUND);
+    }
+ 
+    @Test
+    public void deveriaPegarPedido() throws JsonProcessingException{
+          Pedido pedidoCadastrado = given()
+          .spec(requisicao)
+          .body(objectMapper.writeValueAsString(dadoUmPedido()))
+          .when()
+          .post()
+          .then()
+          .statusCode(HttpStatus.SC_CREATED)
+          .extract()
+          .as(Pedido.class);
+
+          assertNotNull(pedidoCadastrado, "pedido não foi cadastrado");
+          assertNotNull(pedidoCadastrado, "pedido não foi cadastrado");
+
+          given()
+          .spec(requisicao)
+          .body(objectMapper.writeValueAsString(pedidoCadastrado))
+          .when()
+          .get("/{id}", pedidoCadastrado.getPedido())
+          .then() 
+          .statusCode(HttpStatus.SC_OK);
+    }
+
+    @Test
+    public void deveriaMudarStatus () throws JsonProcessingException{
+      Pedido pedidoCadastrado = given()
+          .spec(requisicao)
+          .body(objectMapper.writeValueAsString(dadoUmPedido()))
+          .when()
+          .post()
+          .then()
+          .statusCode(HttpStatus.SC_CREATED)
+          .extract()
+          .as(Pedido.class);
+
+          assertNotNull(pedidoCadastrado, "pedido não foi cadastrado");
+          assertNotNull(pedidoCadastrado, "pedido não foi cadastrado");
+    }
 
     private Pedido dadoUmPedido(){
       
@@ -105,8 +165,16 @@ public class PedidoControlerTest {
       pedido.setStatus("PEDENTE");
       pedido.setTaxa(5.5);
       pedido.setNomeCliente("Lucas");
-
+      pedido.setTelefone((long) 8884351);
+      System.out.println(pedido);
+  
       return pedido;
+   }
+
+   private Status dadoUmStatus(){
+     Status status = new Status();
+     status.setStatus("PRONTO");
+     return status;
    }
     
 }

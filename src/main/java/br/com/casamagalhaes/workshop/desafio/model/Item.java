@@ -15,13 +15,13 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @NotNull(message = "Não pode esta vazio")
+    @NotNull(message = "Não pode esta vazio: descricao")
     private String descricao;
 
-    @NotNull(message = "Não pode esta vazio")
+    @NotNull(message = "Não pode esta vazio: precoUnitario")
     private Double precoUnitario;
 
-    @NotNull(message = "Não pode esta vazio")
+    @NotNull(message = "Não pode esta vazio: quantidade")
     private Integer quantidade;
 
 }
