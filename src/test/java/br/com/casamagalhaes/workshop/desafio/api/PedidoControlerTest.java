@@ -21,6 +21,7 @@ import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 
 import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
@@ -120,7 +121,7 @@ public class PedidoControlerTest {
           .as(Pedido.class);
 
           assertNotNull(pedidoCadastrado, "pedido não foi cadastrado");
-          assertNotNull(pedidoCadastrado, "pedido não foi cadastrado");
+          
 
           given()
           .spec(requisicao)
@@ -133,6 +134,7 @@ public class PedidoControlerTest {
 
     @Test
     public void deveriaMudarStatus () throws JsonProcessingException{
+
       Pedido pedidoCadastrado = given()
           .spec(requisicao)
           .body(objectMapper.writeValueAsString(dadoUmPedido()))
@@ -144,8 +146,49 @@ public class PedidoControlerTest {
           .as(Pedido.class);
 
           assertNotNull(pedidoCadastrado, "pedido não foi cadastrado");
-          assertNotNull(pedidoCadastrado, "pedido não foi cadastrado");
+          
+      
+          given()
+          .spec(requisicao)
+          .body(objectMapper.writeValueAsString(pedidoCadastrado))
+          .when()
+          .post("/{id}/status", pedidoCadastrado.getPedido())
+          .then() 
+          .statusCode(HttpStatus.SC_OK);
+          
     }
+
+
+    @Test
+    public void deveriaAdicionarItem () throws JsonProcessingException{
+      Pedido pedidoCadastrado = given()
+          .spec(requisicao)
+          .body(objectMapper.writeValueAsString(dadoUmPedido()))
+          .when()
+          .post()
+          .then()
+          .statusCode(HttpStatus.SC_CREATED)
+          .extract()
+          .as(Pedido.class);
+
+          assertNotNull(pedidoCadastrado, "pedido não foi cadastrado");
+        
+          Pedido produtoaAlterado =
+          given()
+          .spec(requisicao)
+          .body(objectMapper.writeValueAsString(pedidoCadastrado))
+          .when()
+          .put("/{id}", pedidoCadastrado.getPedido())
+          .then() 
+          .statusCode(HttpStatus.SC_OK)
+          .extract()
+          .as(Pedido.class);
+
+          assertEquals(pedidoCadastrado.getStatus(), produtoaAlterado.getStatus(),
+          "Status não foi alterada");  
+          
+    }
+    
 
     private Pedido dadoUmPedido(){
       
@@ -171,10 +214,10 @@ public class PedidoControlerTest {
       return pedido;
    }
 
-   private Status dadoUmStatus(){
-     Status status = new Status();
-     status.setStatus("PRONTO");
-     return status;
-   }
+  //  private Status dadoUmStatus(){
+  //    Status status = new Status();
+  //    status.setStatus("PRONTO");
+  //    return status;
+  //  }
     
 }
