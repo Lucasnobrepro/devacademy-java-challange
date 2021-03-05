@@ -27,6 +27,11 @@ public class PedidoService {
         return repository.findById(pedido).orElseThrow(EntityNotFoundException::new);
     }
 
+    /*
+    * Entrada: 
+    * Saida: 
+    * Descricao: Pega todos os pedidos;
+    */ 
     public List<Pedido> getPedidoAll(){
         return repository.findAll();
     }

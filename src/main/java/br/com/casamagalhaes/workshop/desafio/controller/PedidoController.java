@@ -1,15 +1,13 @@
 package br.com.casamagalhaes.workshop.desafio.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +33,7 @@ public class PedidoController {
     @Autowired
     private PedidoService servicePedido;
 
-      /*
+    /*
     * Entrada: Recebe um ID de pedido e o novo Status para o pedido;
     * Saida: O retorno é uma string com o novo STATUS; 
     * Descricao: Muda o STATUS do pedido;
@@ -46,7 +44,7 @@ public class PedidoController {
         return servicePedido.statusChange(id,status.getStatus());
     }
 
-      /*
+    /*
     * Entrada: Recebe um ID de um pedido;
     * Saida: Devolve um Pedido;
     * Descricao: Busca um pedido no banco e o retorna;
@@ -66,7 +64,7 @@ public class PedidoController {
         return servicePedido.getPedidoAll();
     }
     
-      /*
+    /*
     * Entrada: Recebe do Body da requisicao um pedido;
     * Saida: Devolve o pedido que foi inserido no banco;
     * Descricao: Adiciona um pedido ao banco;
