@@ -1,12 +1,15 @@
 package br.com.casamagalhaes.workshop.desafio.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -100,4 +103,9 @@ public class PedidoController {
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public void notFound() {}
 
+    @ExceptionHandler(UnsupportedOperationException.class)
+    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
+    public void unsupport(){}
+
+    
 }
