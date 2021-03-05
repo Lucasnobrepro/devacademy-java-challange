@@ -1,6 +1,7 @@
 # CM Dev Academy - Java
 
 Para executar o projeto e necessario utilizar alguma IDE e da Run no projeto;
+
 ## O que contem o projeto;
 01 - Projeto em Spring;
 
@@ -10,3 +11,4 @@ Para executar o projeto e necessario utilizar alguma IDE e da Run no projeto;
 Acessar apos rodar a documentacao SWAGGER:
 - http://localhost:8080/swagger-ui.html
 
+04 - Alguns testes feitos sobre o pedidoController
